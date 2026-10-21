@@ -1,0 +1,46 @@
+#!/bin/bash
+# Flix Hub - Heroku startup script
+# قناتنا: https://t.me/YOUR_CHANNEL
+
+set -e
+
+DEFAULT_REPO="https://github.com/TelethonAr/TelethonArab"
+
+_get_repolink () {
+    local regex='^https?://github\.com/[^/]+/[^/]+$'
+    local repo="${UPSTREAM_REPO%/}"
+
+    if [[ $repo =~ $regex ]]; then
+        echo "${repo}/archive/${UPSTREAM_REPO_BRANCH:-master}.zip"
+    else
+        echo "${DEFAULT_REPO}/archive/master.zip"
+    fi
+}
+
+_setting_bot () {
+    local zippath="flixhub.zip"
+    local link
+    link="$(_get_repolink)"
+
+    echo "   تنزيل اكواد السورس ..."
+    if ! wget -q "$link" -O "$zippath"; then
+        echo "فشل تنزيل السورس من: $link"
+        exit 1
+    fi
+
+    echo "  تنزيل تخزين السورس ..."
+    local srcdir
+    srcdir="$(zipinfo -1 "$zippath" | head -n 1 | cut -d/ -f1)"
+    unzip -qq -o "$zippath"
+    rm -f "$zippath"
+    echo "تم الانتهاء"
+
+    cd "$srcdir"
+    echo "جـاري الاسـتراد لـ Flix Hub  ..."
+    echo "قناتنا: https://t.me/YOUR_CHANNEL"
+
+    python3 ../setup/updater.py ../requirements.txt requirements.txt
+    exec python3 -m userbot
+}
+
+_setting_bot

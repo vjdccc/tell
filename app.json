@@ -1,0 +1,71 @@
+{
+  "name": "Flix Hub",
+  "description": "تنصيب سورس Flix Hub - قناتنا: https://t.me/YOUR_CHANNEL",
+  "stack": "heroku-24",
+  "formation": {
+    "worker": {
+      "quantity": 1,
+      "size": "basic"
+    }
+  },
+  "env": {
+    "GOOGLE_CHROME_BIN": {
+      "description": "لا تغيّره",
+      "value": "/app/.chrome-for-testing/chrome-linux64/chrome",
+      "required": false
+    },
+    "CHROMEDRIVER_PATH": {
+      "description": "لا تغيّره",
+      "value": "/app/.chrome-for-testing/chromedriver-linux64/chromedriver",
+      "required": false
+    },
+    "ALIVE_NAME": {
+      "description": "ضع اسمك الذي في تليجرام",
+      "value": ""
+    },
+    "APP_ID": {
+      "description": "ضع الايبي ايدي هنا",
+      "value": ""
+    },
+    "API_HASH": {
+      "description": "ضع الايبي هاش هنا",
+      "value": ""
+    },
+    "STRING_SESSION": {
+      "description": "ضع كود تيرمكس هنا",
+      "value": ""
+    },
+    "TG_BOT_USERNAME": {
+      "description": "ضع معرف البوت هنا",
+      "value": ""
+    },
+    "TG_BOT_TOKEN": {
+      "description": "ضع توكن البوت هنا",
+      "value": ""
+    },
+    "TZ": {
+      "description": "الوقت",
+      "value": "Asia/Baghdad",
+      "required": false
+    },
+    "UPSTREAM_REPO": {
+      "description": "لاتـغيره!",
+      "value": "Telethon-Ar",
+      "required": false
+    }
+  },
+  "addons": [
+    {
+      "plan": "heroku-postgresql:essential-0",
+      "options": {
+        "version": "16"
+      }
+    }
+  ],
+  "buildpacks": [
+    { "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest" },
+    { "url": "https://github.com/heroku/heroku-buildpack-chrome-for-testing" },
+    { "url": "https://github.com/heroku/heroku-buildpack-apt.git" },
+    { "url": "heroku/python" }
+  ]
+}
